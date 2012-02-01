@@ -48,9 +48,9 @@ fs.readdir(fixturesPath, function(err, files) {
 });
 
 // test options.textNodeKey custom value
-var xml = '<ref href="http://example.com">http://example.com</ref>';
+var xml = '<a href="http://example.com">Example Site</a>';
 var actual = parser.toJson(xml, {object: true, textNodeKey: 'hi'});
-var json = '{"ref":{"href":"http://example.com","hi":"http://example.com"}}';
+var json = '{"a":{"href":"http://example.com","hi":"Example Site"}}';
 assert.deepEqual(actual, JSON.parse(json));
 
 // test options.textNodeKey default value
@@ -59,3 +59,9 @@ var json = json.replace('"hi":', '"$t":');
 assert.deepEqual(actual, JSON.parse(json));
 
 console.log('[xml2json options.textNodeKey] passed');
+
+// test options.attributes = false
+var actual = parser.toJson(xml, {object: true, attributes: false});
+var json = '{"a": "Example Site"}'
+assert.deepEqual(actual, JSON.parse(json));
+console.log('[xml2json options.attributes] passed');
