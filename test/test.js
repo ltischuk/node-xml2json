@@ -17,7 +17,17 @@ fs.readdir(fixturesPath, function(err, files) {
             var result = parser.toJson(data, {reversible: true});
 
             var  data2 =  fs.readFileSync(fixturesPath + '/' + file);
-            result = parser.toJson(data2);
+            if (file.indexOf('spacetext') >= 0) {
+                result = parser.toJson(data2, {trim: false, coerce: false});
+            } else if (file.indexOf('coerce') >= 0) {
+                result = parser.toJson(data2, {coerce: false});
+            } else if (file.indexOf('domain') >= 0) {
+                result = parser.toJson(data2, {coerce: false});
+            } else if (file.indexOf('large') >= 0) {
+                result = parser.toJson(data2, {coerce: false, trim: true, sanitize: false});
+            } else {
+                result = parser.toJson(data2, {trim: false});
+            }
 
             var jsonFile = basename + '.json';
             var expected = fs.readFileSync(fixturesPath + '/' + jsonFile) + '';
@@ -25,6 +35,9 @@ fs.readdir(fixturesPath, function(err, files) {
             if (expected) {
                 expected = expected.trim();
             }
+            /*console.log(result);
+            console.log('============ Expected ===============');
+            console.log(expected)*/
             assert.deepEqual(result, expected, jsonFile + ' and ' + file + ' are different');
             console.log('[xml2json: ' + file + '->' + jsonFile + '] passed!');
         } else if( ext == '.json') {
@@ -47,21 +60,3 @@ fs.readdir(fixturesPath, function(err, files) {
     }
 });
 
-// test options.textNodeKey custom value
-var xml = '<a href="http://example.com">Example Site</a>';
-var actual = parser.toJson(xml, {object: true, textNodeKey: 'hi'});
-var json = '{"a":{"href":"http://example.com","hi":"Example Site"}}';
-assert.deepEqual(actual, JSON.parse(json));
-
-// test options.textNodeKey default value
-var actual = parser.toJson(xml, {object: true});
-var json = json.replace('"hi":', '"$t":');
-assert.deepEqual(actual, JSON.parse(json));
-
-console.log('[xml2json options.textNodeKey] passed');
-
-// test options.attributes = false
-var actual = parser.toJson(xml, {object: true, attributes: false});
-var json = '{"a": "Example Site"}'
-assert.deepEqual(actual, JSON.parse(json));
-console.log('[xml2json options.attributes] passed');
