@@ -1,15 +1,18 @@
-{   "name" : "xml2json",
-    "version": "0.3.2",
-    "author": "Andrew Turley",
-    "email": "aturley@buglabs.net",
-    "description" : "Converts xml to json and viceverza, using node-expat.",
-    "repository": "git://github.com/buglabs/node-xml2json.git", 
-    "main": "index", 
-    "contributors":[ 
-        {"name": "Camilo Aguilar", "email": "camilo.aguilar@gmail.com"}
-    ],
-    "dependencies": {
-       "node-expat": "2.0.0"
-    }
+{
+	"name" : "xml2json",
+	"version": "0.3.2",
+	"author": "Andrew Turley",
+	"email": "aturley@buglabs.net",
+	"description" : "Converts xml to json and viceverza, using node-expat.",
+	"repository": "git://github.com/buglabs/node-xml2json.git", 
+	"main": "index", 
+	"contributors":[ 
+		{ "name": "Camilo Aguilar", "email": "camilo.aguilar@gmail.com" }
+	],
+	"dependencies": {
+	   "node-expat": "2.0.0"
+	},
+	"bin": {
+		"xml2json": "bin/xml2json"
+	}
 }
-
